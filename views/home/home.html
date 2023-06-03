@@ -1,0 +1,171 @@
+<div id="container" class="collapsed">
+  <div class="outer">
+    <div id="closeButton">Close</div>
+  </div>
+  <div class="outer" id="contents"></div>
+  <!--<div class="outer">Contents go here</div>-->
+</div>
+
+<a-scene
+  recenter-button
+  xrextras-gesture-detector
+  landing-page
+  xrextras-loading
+  xrextras-runtime-error
+  renderer="colorManagement: true; webgl2: true"
+  xrweb="allowedDevices: any;
+    defaultEnvironmentFogIntensity: 0.5; 
+    defaultEnvironmentFloorTexture: #groundTex; 
+    defaultEnvironmentFloorColor: #FFF;
+    defaultEnvironmentSkyBottomColor: #B4C4CC; 
+    defaultEnvironmentSkyTopColor: #5ac8fa;
+    defaultEnvironmentSkyGradientStrength: 0.5;
+    "
+  gltf-model="dracoDecoderPath: https://cdn.8thwall.com/web/aframe/draco-decoder/"
+>
+  <!-- We can define assets here to be loaded when A-Frame initializes -->
+  <a-assets>
+    <!-- Credit to Poly by Google for the model: https://poly.google.com/view/7rUkCX-AIR2 -->
+    <a-asset-item
+      id="gasStationModel"
+      src="../../assets/models/nekala3.glb"
+    ></a-asset-item>
+
+    <!-- hotspot text -->
+    <a-mixin
+      id="hotspot-text"
+      text="font: exo2bold; width: 5"
+      geometry="primitive: plane; width: 1.6; height: 0.4"
+      material="color: red;"
+      position="0 2 0"
+    ></a-mixin>
+    <a-mixin
+      id="hotspot-text1"
+      text="font: exo2bold; width: 5"
+      geometry="primitive: plane; width: 1.6; height: 0.4"
+      material="color: black;"
+      position="0 1.5 0"
+    ></a-mixin>
+    <a-mixin
+      id="hotspot-text2"
+      text="font: exo2bold; width: 5"
+      geometry="primitive: plane; width: 1.6; height: 0.4"
+      material="color: black;"
+      position="0 1 0"
+    ></a-mixin>
+    <a-mixin
+      id="hotspot-text3"
+      text="font: exo2bold; width: 5"
+      geometry="primitive: plane; width: 1.6; height: 0.4"
+      material="color: black;"
+      position="0 0.5 0"
+    ></a-mixin>
+    <a-mixin
+      id="hotspot-target"
+      geometry="primitive: octahedron; radius: 0.2;"
+      material="flatShading: true; color: rgb(255, 0, 161)"
+    ></a-mixin>
+  </a-assets>
+
+  <!-- The raycaster will emit mouse events on scene objects specified with the cantap class -->
+  <a-camera
+    id="camera"
+    position="-0.3 1 -1"
+    raycaster="objects: .cantap"
+    cursor="fuse: false; rayOrigin: mouse;"
+    camera-logger
+  >
+  </a-camera>
+
+  <a-entity
+    light="
+      type: directional;
+      intensity: 0.8;
+      castShadow: true;
+      shadowMapHeight:2048;
+      shadowMapWidth:2048;
+      shadowCameraTop: 10;
+      target: #model;"
+    xrextras-attach="target: model; offset: 1 15 3;"
+    shadow
+  >
+  </a-entity>
+
+  <a-light type="ambient" intensity="0.7"></a-light>
+
+  <a-entity
+    id="model"
+    gltf-model="#gasStationModel"
+    class="cantap"
+    scale="2 2 2"
+    position="0 -0.5 0"
+    shadow
+  >
+    <!--Hotspot #1-->
+    <a-entity
+      id="hotspot1"
+      mixin="hotspot-target"
+      position="-2 1.5 -5.7"
+      rotation="0 0 0"
+      scale="0.5 0.5 0.5"
+      look-at="#camera"
+      class="cantap"
+      tap-hotspot
+    >
+      <a-text
+        id="hotspot1-child"
+        class="cantap"
+        value="Play Games"
+        align="center"
+        mixin="hotspot-text"
+        tap-close
+        tap-link
+        visible="false"
+        href="./car"
+      ></a-text>
+      <a-text
+        id="hotspot1-child1"
+        value="About"
+        class="cantap"
+        align="center"
+        mixin="hotspot-text1"
+        tap-close
+        tap-link
+        visible="false"
+        href="./about"
+      ></a-text>
+      <a-text
+        id="hotspot1-child2"
+        value="Working"
+        class="cantap"
+        align="center"
+        mixin="hotspot-text2"
+        tap-close
+        tap-link
+        visible="false"
+        href="./information"
+      ></a-text>
+      <a-text
+        id="hotspot1-child3"
+        value="Rewards"
+        class="cantap"
+        align="center"
+        mixin="hotspot-text3"
+        tap-close
+        tap-link
+        visible="false"
+        href="./rewards"
+      ></a-text>
+    </a-entity>
+  </a-entity>
+
+  <a-plane
+    id="ground"
+    rotation="-90 0 0"
+    width="1000"
+    height="1000"
+    material="shader: shadow"
+    shadow
+  >
+  </a-plane>
+</a-scene>
